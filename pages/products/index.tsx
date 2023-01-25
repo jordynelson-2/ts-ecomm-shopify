@@ -6,8 +6,6 @@ function Products({ products, shoes, hoodies, gilets, airJordan1Low }: any) {
   const [brand, setBrand] = useState("All Brands");
 
   products = JSON.parse(products);
-  console.log(products);
-  console.log("SHOES", shoes);
 
   let productsToShow;
   switch (productCategory) {
@@ -76,7 +74,7 @@ function Products({ products, shoes, hoodies, gilets, airJordan1Low }: any) {
           <div>
             <a
               href={`/products/${product.handle}`}
-              className="group h-80 block bg-gray-100 rounded-lg overflow-hidden relative mb-2 lg:mb-3"
+              className="group h-80 block bg-gray-100 mr-4 rounded-lg overflow-hidden relative mb-2 lg:mb-3"
             >
               <img
                 src={product.images[0].src}
@@ -113,7 +111,6 @@ export async function getStaticProps() {
   const res = await client.product.fetchAll();
   const products = JSON.stringify(res);
   const productsArray = JSON.parse(products);
-  console.log("Unsorted products", productsArray);
 
   // Sort the products alphabetically by title
   productsArray.sort((a: any, b: any) => {
@@ -125,8 +122,6 @@ export async function getStaticProps() {
     }
     return 0;
   });
-
-  console.log("Sorted products", productsArray);
 
   const shoes = productsArray.filter((product: any) =>
     product.productType.toLowerCase().includes("shoes")

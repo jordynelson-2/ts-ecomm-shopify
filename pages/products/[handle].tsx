@@ -69,7 +69,7 @@ function Product({ product }: any) {
   };
 
   product = JSON.parse(product);
-  console.log("PRODUCT", product);
+  // console.log("PRODUCT", product);
   const variants = product.variants;
 
   // console.log("VARIANTS", variants);

@@ -140,9 +140,7 @@ function Cart() {
                       </div>
 
                       <div>
-                        <span className="block text-gray-800 md:text-lg font-bold mb-1">
-                          $15.00
-                        </span>
+                        <span className="block text-gray-800 md:text-lg font-bold mb-1"></span>
 
                         <span className="flex items-center text-gray-500 text-sm gap-1">
                           <svg
@@ -202,7 +200,7 @@ function Cart() {
 
                       <div className="pt-3 sm:pt-2 ml-4 md:ml-8 lg:ml-16">
                         <span className="block text-gray-800 md:text-lg font-bold">
-                          $15.00
+                          {`£${amount}`}
                         </span>
                       </div>
                     </div>

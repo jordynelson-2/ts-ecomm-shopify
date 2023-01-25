@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       <section>
         <div
           ref={firstSectionRef}
-          className=" relative h-[100vh] w-[100%] overflow-hidden flex flex-col items-center justify-center max-w-5xl mx-auto px-4 gap-2"
+          className=" relative px-8 h-auto w-[100%] md:h-[100vh] overflow-hidden flex flex-col items-center justify-center max-w-5xl mx-auto lg:px-4 gap-2"
         >
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
             exit={{ opacity: 0, y: -20 }}
             className=""
           >
-            <h1 className="text-5xl font-bold text-inter">
+            <h1 className="text-3xl lg:text-5xl font-bold text-inter text-center">
               the brands you{" "}
               <span>
                 <img
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
           </motion.div>
         </div>
         <button
-          className="absolute bottom-0 right-0 p-4 m-10 bg-indigo-500 text-white rounded-full shadow-lg "
+          className="opacity-0 md:opacity-100 absolute bottom-0 right-0 p-4 m-10 bg-indigo-500 text-white rounded-full shadow-lg "
           onClick={scrollToSecondSection}
         >
           What we offer <IoIosArrowDown className="inline-block" />
@@ -114,7 +114,7 @@ const Home: NextPage = () => {
       >
         <div className=" h-[100vh] w-[100%] px-4 md:px-8 mx-auto justify-center">
           <div className="mb-10 md:mb-16">
-            <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
+            <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 mt-4 md:mb-6">
               What we offer
             </h2>
           </div>
