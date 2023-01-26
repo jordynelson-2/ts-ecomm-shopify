@@ -4,6 +4,7 @@ import { useCartDispatch, useCartState } from "../../context/cart";
 import cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
 export const getStaticPaths = async () => {
   const res = await client.product.fetchAll();
@@ -19,9 +20,6 @@ export const getStaticPaths = async () => {
   };
 };
 
-const shoeSizes = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
-const clothingSizes = ["S", "M", "L", "XL", "XXL"];
-
 export const getStaticProps = async (context: any) => {
   const handle = context.params.handle;
   const res = await client.product.fetchByHandle(handle);
@@ -32,6 +30,9 @@ export const getStaticProps = async (context: any) => {
     },
   };
 };
+
+const shoeSizes = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
+const clothingSizes = ["S", "M", "L", "XL", "XXL"];
 
 function Product({ product }: any) {
   const { state } = useCartState();
@@ -86,30 +87,18 @@ function Product({ product }: any) {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="bg-gray-100 rounded-lg overflow-hidden relative">
-                <img
+                <Image
                   src={
                     variants.find(
                       (variant: any) => variant.id === selectedVariant
                     )?.image.src ?? variants[0].image.src
                   }
-                  loading="lazy"
-                  alt="Photo by Himanshu Dewangan"
-                  className="w-full h-full object-cover object-center"
+                  alt=""
+                  className=" object-cover object-center"
+                  width={399}
+                  height={266}
                 />
               </div>
-
-              {/* <div className="grid grid-cols-2 gap-4">
-                {variants.map((variant: any) => (
-                  <div className="bg-gray-100 rounded-lg overflow-hidden">
-                    <img
-                      src={variant.image.src}
-                      loading="lazy"
-                      alt="Photo by Himanshu Dewangan"
-                      className="w-full h-full object-cover object-center"
-                    />
-                  </div>
-                ))}
-              </div> */}
             </div>
 
             <div className="md:py-8">

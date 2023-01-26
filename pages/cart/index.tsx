@@ -113,7 +113,6 @@ function Cart() {
                       >
                         <Image
                           src={item.variant.image.src}
-                          loading="lazy"
                           width={300}
                           height={300}
                           alt="Photo by Thái An"
