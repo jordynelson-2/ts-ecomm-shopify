@@ -95,7 +95,7 @@ function Product({ product }: any) {
                   }
                   alt=""
                   className=" object-cover object-center"
-                  width={399}
+                  width={464}
                   height={266}
                 />
               </div>
