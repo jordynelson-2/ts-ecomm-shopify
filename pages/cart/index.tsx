@@ -107,18 +107,13 @@ function Cart() {
                 <div className="py-5 sm:py-8">
                   <div className="flex flex-wrap gap-4 lg:gap-6 sm:py-2.5">
                     <div className="sm:-my-2.5">
-                      <a
-                        href="#"
-                        className="group w-24 sm:w-40 h-40 sm:h-56 block bg-gray-100 rounded-lg overflow-hidden relative"
-                      >
-                        <Image
-                          src={item.variant.image.src}
-                          width={300}
-                          height={300}
-                          alt="Photo by Thái An"
-                          className=" w-full h-full object-cover object-center group-hover:scale-110 transition duration-200"
-                        />
-                      </a>
+                      <Image
+                        src={item.variant.image.src}
+                        width={400}
+                        height={300}
+                        alt="Photo by Thái An"
+                        className="  object-cover object-center group-hover:scale-110 transition duration-200 rounded-md"
+                      />
                     </div>
 
                     <div className="flex flex-col justify-between flex-1">
