@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 function Home() {
   return (
@@ -17,11 +18,14 @@ function Home() {
         <div className="flex flex-col ">
           <p className="text-center"> #1🔌for all your favourite brands.</p>
           <div className="flex flex-col md:flex-row justify-center gap-4 mt-4 ">
-            <button className="button  bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3">
+            <Link
+              href="/products"
+              className="button  bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
+            >
               Shop Now
-            </button>
+            </Link>
             <button className="button  bg-white hover:bg-gray-100 active:bg-gray-200 focus-visible:ring ring-indigo-300 border text-gray-500 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3">
-              Find Out More!
+              How It Works
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 mb-6">

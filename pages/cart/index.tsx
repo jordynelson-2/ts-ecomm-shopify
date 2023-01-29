@@ -194,7 +194,7 @@ function Cart() {
 
                       <div className="pt-3 sm:pt-2 ml-4 md:ml-8 lg:ml-16">
                         <span className="block text-gray-800 md:text-lg font-bold">
-                          {`£${amount}`}
+                          {`£${item.variant.price.amount}`}
                         </span>
                       </div>
                     </div>
@@ -208,7 +208,7 @@ function Cart() {
             <div className="space-y-1">
               <div className="flex justify-between text-gray-500 gap-4">
                 <span>Subtotal</span>
-                <span>{`£${amount}`}</span>
+                <span>{`£${parseInt(amount)}`}</span>
               </div>
               {/* 
               <div className="flex justify-between text-gray-500 gap-4">
@@ -222,7 +222,9 @@ function Cart() {
                 <span className="text-lg font-bold">Total</span>
 
                 <span className="flex flex-col items-end">
-                  <span className="text-lg font-bold">{`${amount} GBP`}</span>
+                  <span className="text-lg font-bold">{`${parseInt(
+                    amount
+                  )} GBP`}</span>
                   <span className="text-gray-500 text-sm">including VAT</span>
                 </span>
               </div>

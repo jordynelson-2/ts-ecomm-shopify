@@ -74,7 +74,7 @@ function Products({ products, shoes, hoodies, gilets, airJordan1Low }: any) {
           <div>
             <a
               href={`/products/${product.handle}`}
-              className="group h-80 block bg-gray-100 mr-4 rounded-lg overflow-hidden relative mb-2 lg:mb-3"
+              className="group h-80 block bg-gray-100 rounded-lg overflow-hidden relative mb-2 lg:mb-3"
             >
               <img
                 src={product.images[0].src}
@@ -97,7 +97,7 @@ function Products({ products, shoes, hoodies, gilets, airJordan1Low }: any) {
             </div>
             <div className="flex items-end gap-2">
               <span className="text-gray-800 lg:text-lg font-bold">
-                {`£${product.variants[0].price.amount}`}
+                {`£${parseInt(product.variants[0].price.amount)}`}
               </span>
             </div>
           </div>

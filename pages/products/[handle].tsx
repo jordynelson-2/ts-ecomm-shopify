@@ -35,9 +35,11 @@ const shoeSizes = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 const clothingSizes = ["S", "M", "L", "XL", "XXL"];
 
 function Product({ product }: any) {
+  product = JSON.parse(product);
+  const variants = product.variants;
   const { state } = useCartState();
   const { setCart } = useCartDispatch();
-  const [selectedVariant, setSelectedVariant] = useState("");
+  const [selectedVariant, setSelectedVariant] = useState(variants[0].id);
   const [selectedSize, setSelectedSize] = useState("");
 
   const handleVariantChange = (title: string) => {
@@ -49,6 +51,13 @@ function Product({ product }: any) {
   };
 
   const addToCart = async () => {
+    if (selectedVariant === "" || selectedSize === "") {
+      toast.error("Please select a size and colour!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+
     const checkoutId = state.id;
     const lineItemsToAdd = [
       {
@@ -68,10 +77,6 @@ function Product({ product }: any) {
       position: toast.POSITION.TOP_RIGHT,
     });
   };
-
-  product = JSON.parse(product);
-  // console.log("PRODUCT", product);
-  const variants = product.variants;
 
   // console.log("VARIANTS", variants);
   // let selectedOptions = variants.map((variant: any) => {
@@ -172,11 +177,11 @@ function Product({ product }: any) {
               <div className="mb-4">
                 <div className="flex items-end gap-2">
                   <span className="text-gray-800 text-xl md:text-2xl font-bold">
-                    {`£${
+                    {`£${parseInt(
                       variants.find(
                         (variant: any) => variant.id === selectedVariant
                       )?.priceV2.amount ?? variants[0].priceV2.amount
-                    }`}
+                    )}`}
                   </span>
                 </div>
 
