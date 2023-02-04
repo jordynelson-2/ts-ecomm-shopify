@@ -4,6 +4,7 @@ import {
   AiOutlineClose,
   AiFillHome,
   AiOutlineShoppingCart,
+  AiOutlineInfoCircle,
 } from "react-icons/ai";
 import { GiClothes } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,6 +14,7 @@ const links = [
   { name: "Home", to: "/", logo: AiFillHome, id: 1 },
   { name: "Products", to: "/products", logo: GiClothes, id: 2 },
   { name: "Cart", to: "/cart", logo: AiOutlineShoppingCart, id: 3 },
+  { name: "About", to: "/about", logo: AiOutlineInfoCircle, id: 4 },
 ];
 
 const sideVariants = {
