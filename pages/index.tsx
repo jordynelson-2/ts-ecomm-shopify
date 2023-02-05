@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import Modal from "../components/Modal";
 
 function Home() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
       <h1 className="text-center text-2xl mb-4 md:text-3xl lg:text-5xl font-bold text-inter px-8">
@@ -24,9 +27,17 @@ function Home() {
             >
               Shop Now
             </Link>
-            <button className="button  bg-white hover:bg-gray-100 active:bg-gray-200 focus-visible:ring ring-indigo-300 border text-gray-500 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3">
+            <button
+              onClick={() => setShowModal(true)}
+              className="button  bg-white hover:bg-gray-100 active:bg-gray-200 focus-visible:ring ring-indigo-300 border text-gray-500 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
+            >
               How It Works
             </button>
+            <Modal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              description="test"
+            />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 mb-6">
             <div className="flex gap-2">
