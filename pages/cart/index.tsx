@@ -194,7 +194,7 @@ function Cart() {
 
                       <div className="pt-3 sm:pt-2 ml-4 md:ml-8 lg:ml-16">
                         <span className="block text-gray-800 md:text-lg font-bold">
-                          {`£${item.variant.price.amount}`}
+                          {`£${parseInt(amount)} `}
                         </span>
                       </div>
                     </div>
