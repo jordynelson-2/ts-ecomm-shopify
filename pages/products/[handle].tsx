@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 
 export const getStaticPaths = async () => {
-  const res = await client.product.fetchAll();
+  const res = await client.product.fetchAll(30);
   const paths = res.map((product: any) => {
     return {
       params: { handle: product.handle.toString() },
@@ -16,7 +16,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 

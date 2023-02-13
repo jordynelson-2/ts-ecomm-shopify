@@ -6,6 +6,8 @@ function Products({ products, shoes, hoodies, gilets, tShirts, jackets }: any) {
   const [brand, setBrand] = useState("All Brands");
 
   products = JSON.parse(products);
+  console.log(products);
+  console.log(shoes);
 
   let productsToShow;
   switch (productCategory) {
@@ -131,7 +133,7 @@ function Products({ products, shoes, hoodies, gilets, tShirts, jackets }: any) {
 }
 
 export async function getStaticProps() {
-  const res = await client.product.fetchAll();
+  const res = await client.product.fetchAll(30);
   const products = JSON.stringify(res);
   const productsArray = JSON.parse(products);
 
