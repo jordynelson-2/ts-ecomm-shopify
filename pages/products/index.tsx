@@ -6,8 +6,8 @@ function Products({ products, shoes, hoodies, gilets, tShirts, jackets }: any) {
   const [brand, setBrand] = useState("All Brands");
 
   products = JSON.parse(products);
-  console.log(products);
-  console.log(shoes);
+  // console.log(products);
+  // console.log(shoes);
 
   let productsToShow;
   switch (productCategory) {
