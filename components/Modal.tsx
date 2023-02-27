@@ -5,7 +5,7 @@ import { FaWindowClose } from "react-icons/fa";
 function Modal({ showModal, setShowModal, description }: any) {
   return (
     <>
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence>
         {showModal && (
           <motion.div
             className="backdrop"
