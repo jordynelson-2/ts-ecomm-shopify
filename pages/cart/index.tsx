@@ -11,8 +11,6 @@ function Cart() {
   const { totalPrice, lineItems } = state;
   const { amount } = totalPrice;
 
-  console.log(state);
-
   const incrementQuantity = (event: any) => {
     const itemId = event.target.dataset.itemId;
     const checkoutId = cookie.get("checkoutId");
@@ -79,6 +77,7 @@ function Cart() {
   };
 
   const isEmpty = lineItems.length === 0;
+  console.log("LINE ITEMS", lineItems);
 
   if (isEmpty) {
     return (
@@ -194,7 +193,7 @@ function Cart() {
 
                       <div className="pt-3 sm:pt-2 ml-4 md:ml-8 lg:ml-16">
                         <span className="block text-gray-800 md:text-lg font-bold">
-                          {`£${parseInt(amount)} `}
+                          {`£${parseInt(item.variant.price.amount)} `}
                         </span>
                       </div>
                     </div>
