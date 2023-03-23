@@ -57,7 +57,7 @@ function Collection() {
                   src={product.images[0].src}
                   loading="lazy"
                   alt="Photo by Irene Kredenets"
-                  className=" w-full h-full object-cover object-center group-hover:scale-110 transition duration-200 blur-lg hover:blur-none"
+                  className=" w-full h-full object-cover object-center group-hover:scale-110 transition duration-200 "
                 />
               </a>
 
