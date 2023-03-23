@@ -18,6 +18,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case SET_CART:
       return { ...state, ...action.payload };
+    case SET_COLLECTIONS:
+      return { ...state, ...action.payload };
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
