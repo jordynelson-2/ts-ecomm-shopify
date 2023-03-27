@@ -4,7 +4,4 @@ module.exports = {
   images: {
     domains: ["cdn.shopify.com"],
   },
-  experimental: {
-    largePageDataBytes: 100000000,
-  },
 };

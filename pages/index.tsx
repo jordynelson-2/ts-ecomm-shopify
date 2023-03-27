@@ -22,7 +22,7 @@ function Home() {
           <p className="text-center"> #1🔌for all your favourite brands.</p>
           <div className="flex flex-col md:flex-row justify-center gap-4 mt-4 ">
             <Link
-              href="/products"
+              href="/collections"
               className="button  bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
             >
               Shop Now
