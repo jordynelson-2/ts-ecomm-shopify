@@ -47,8 +47,8 @@ function Navbar() {
     <nav>
       <div className="flex justify-between items-center h-24 max-w-xl md:max-w-5xl mx-auto px-4">
         <img
-          src="/TS-figma-logo.svg"
-          className="h-[40px] w-[40px] object-contain"
+          src="/ts-plug.svg"
+          className="h-[60px] w-[60px] object-contain"
           alt="Tuckshop"
         />
         <ul className=" hidden md:flex gap-2 text-l font-semibold text-inter capitalize">

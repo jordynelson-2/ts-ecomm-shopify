@@ -32,7 +32,7 @@ function Cart() {
     client.checkout
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((res: any) => {
-        console.log(res);
+        //console.log(res);
         setCart(res);
       });
   };
@@ -58,7 +58,7 @@ function Cart() {
     client.checkout
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((res: any) => {
-        console.log(res);
+        //console.log(res);
         setCart(res);
       });
   };
@@ -71,17 +71,16 @@ function Cart() {
     client.checkout
       .removeLineItems(checkoutId, lineItemIdsToRemove)
       .then((res: any) => {
-        console.log(res);
+        //console.log(res);
         setCart(res);
       });
   };
 
   const isEmpty = lineItems.length === 0;
-  console.log("LINE ITEMS", lineItems);
 
   if (isEmpty) {
     return (
-      <div className="max-w-screen-lg px-4  mx-auto">
+      <div className="max-w-screen-lg px-4 mx-auto">
         <div className="mb-6 sm:mb-10 lg:mb-16">
           <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
             Your Cart is Empty

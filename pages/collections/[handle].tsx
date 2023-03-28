@@ -18,7 +18,6 @@ function Collection() {
             productsFirst: 10,
           })
           .then((res: any) => {
-            console.log("RES", res);
             const serializedProducts = res.products.map((product: any) => {
               return {
                 id: product.id,
@@ -38,19 +37,28 @@ function Collection() {
     });
   };
 
+  //function to capetalize the handle
+  const capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   useEffect(() => {
     getProductsFromCollection();
   }, [handle, collections]);
 
   return (
-    console.log("products", products),
-    (
-      <>
+    <>
+      <div className="mx-auto max-w-screen-2xl px-4 mb-10 md:px-8">
+        <div className="mb-10 md:mb-16">
+          <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">
+            {capitalize(handle?.toString() || "")}
+          </h2>
+        </div>
         <nav className="flex pl-6 mb-4" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
-              <a
-                href="#"
+              <Link
+                href="/"
                 className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -63,7 +71,7 @@ function Collection() {
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
                 Home
-              </a>
+              </Link>
             </li>
             <li>
               <div className="flex items-center">
@@ -80,12 +88,12 @@ function Collection() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <a
-                  href="#"
+                <Link
+                  href="/collections"
                   className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
                 >
                   Collections
-                </a>
+                </Link>
               </div>
             </li>
             <li aria-current="page">
@@ -104,7 +112,7 @@ function Collection() {
                   ></path>
                 </svg>
                 <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
-                  {}
+                  {capitalize(handle?.toString() || "")}
                 </span>
               </div>
             </li>
@@ -144,8 +152,8 @@ function Collection() {
             </div>
           ))}
         </div>
-      </>
-    )
+      </div>
+    </>
   );
 }
 

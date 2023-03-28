@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import client from "../../lib/client";
 import { useCartDispatch, useCartState } from "../../context/cart";
 import cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
+import { useShopify } from "../../context/collection";
 
 export const getStaticPaths = async () => {
   const res = await client.product.fetchAll(30);
@@ -68,7 +70,6 @@ function Product({ product }: any) {
     ];
 
     const res = await client.checkout.addLineItems(checkoutId, lineItemsToAdd);
-    // console.log(res);
     if (cookie.get("checkoutId") === undefined) {
       cookie.set("checkoutId", res.id);
     }
@@ -78,17 +79,108 @@ function Product({ product }: any) {
     });
   };
 
-  // console.log("VARIANTS", variants);
-  // let selectedOptions = variants.map((variant: any) => {
-  //   return variant.selectedOptions;
-  // });
-  // selectedOptions = selectedOptions.flat();
-  // console.log("SELECTED OPTIONS", selectedOptions);
+  const capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
     <>
       <div className="bg-white py-6 sm:py-8 lg:py-12">
         <div className="max-w-screen-lg px-4 md:px-8 mx-auto">
+          <nav className="flex  mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link
+                  href="/"
+                  className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                  </svg>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <svg
+                    aria-hidden="true"
+                    className="w-6 h-6 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <Link
+                    href="/collections"
+                    className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    Collections
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <svg
+                    aria-hidden="true"
+                    className="w-6 h-6 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <Link
+                    href={`/collections/${
+                      product.productType === "hoodie"
+                        ? "hoodies"
+                        : product.productType
+                    }`}
+                    className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    {product.productType === "hoodie"
+                      ? "Hoodies"
+                      : capitalize(product.productType)}
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <svg
+                    aria-hidden="true"
+                    className="w-6 h-6 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+
+                  <p className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                    {product.title}
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </nav>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="bg-gray-100 rounded-lg overflow-hidden relative">
@@ -160,7 +252,10 @@ function Product({ product }: any) {
                           {`UK ${size}`}
                         </button>
                       ))
-                    : clothingSizes.map((size) => (
+                    : product.productType === "hoodie" ||
+                      product.productType === "t-shirt" ||
+                      product.productType === "jacket"
+                    ? clothingSizes.map((size) => (
                         <button
                           onClick={() => handleSizeChange(size)}
                           type="button"
@@ -170,7 +265,8 @@ function Product({ product }: any) {
                         >
                           {size}
                         </button>
-                      ))}
+                      ))
+                    : null}
                 </div>
               </div>
 
