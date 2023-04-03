@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useShopify } from "../../context/collection";
 
 export const getStaticPaths = async () => {
-  const res = await client.product.fetchAll(30);
+  const res = await client.product.fetchAll(100);
   const paths = res.map((product: any) => {
     return {
       params: { handle: product.handle.toString() },
