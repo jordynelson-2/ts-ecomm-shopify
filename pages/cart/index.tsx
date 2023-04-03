@@ -95,7 +95,7 @@ function Cart() {
       <div className="max-w-screen-lg px-4  mx-auto">
         <div className="mb-6 sm:mb-10 lg:mb-16">
           <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
-            Your Cart
+            Your Cartt
           </h2>
         </div>
         <div className="flex flex-col sm:border-t sm:border-b sm:divide-y mb-5 sm:mb-8">
