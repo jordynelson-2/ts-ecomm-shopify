@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { HiOutlineCollection } from "react-icons/hi";
 import {
   AiOutlineClose,
   AiFillHome,
@@ -12,7 +13,7 @@ import Link from "next/link";
 
 const links = [
   { name: "Home", to: "/", logo: AiFillHome, id: 1 },
-  { name: "Collections", to: "/collections", logo: AiFillHome, id: 1 },
+  { name: "Collections", to: "/collections", logo: HiOutlineCollection, id: 1 },
   // { name: "Products", to: "/products", logo: GiClothes, id: 2 },
   { name: "Cart", to: "/cart", logo: AiOutlineShoppingCart, id: 3 },
   { name: "About", to: "/about", logo: AiOutlineInfoCircle, id: 4 },
