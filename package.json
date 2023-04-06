@@ -6,13 +6,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "flowbite": "^1.6.4",
+    "flowbite-react": "^0.4.3",
     "framer-motion": "^8.1.5",
     "js-cookie": "^3.0.1",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
-    "react-slick": "^0.29.0",
     "react-toastify": "^9.1.1",
     "shopify-buy": "^2.17.1"
   },

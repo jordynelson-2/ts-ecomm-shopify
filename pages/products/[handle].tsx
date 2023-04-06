@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import client from "../../lib/client";
 import { useCartDispatch, useCartState } from "../../context/cart";
@@ -6,7 +6,7 @@ import cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
-import { useShopify } from "../../context/collection";
+import { Carousel } from "flowbite-react";
 
 export const getStaticPaths = async () => {
   const res = await client.product.fetchAll(100);
@@ -46,6 +46,30 @@ function Product({ product }: any) {
 
   const handleVariantChange = (title: string) => {
     setSelectedVariant(title);
+
+    //get the element with an element = data-testid="carousel"
+    const carousel = document.querySelector("[data-testid='carousel']");
+    //console.log(carousel);
+
+    //get the html element of the first direct child of the carousel
+    const firstChild = carousel?.firstElementChild;
+    //console.log(firstChild);
+
+    //there is 3 div elements inside firstChild with the data-testid="carousel-item", get them and add them to an array
+
+    const carouselItems = Array.from(
+      firstChild?.querySelectorAll("[data-testid='carousel-item']") ?? []
+    );
+
+    //console.log(carouselItems);
+
+    //get the index of the selected variant
+    const index = variants.findIndex((variant: any) => variant.id === title);
+    //console.log(index);
+
+    //get the element with the data-testid="carousel-item" that matches the index of the selected variant
+    const selectedCarouselItem = carouselItems[index];
+    console.log(selectedCarouselItem);
   };
 
   const handleSizeChange = (size: string) => {
@@ -182,20 +206,20 @@ function Product({ product }: any) {
             </ol>
           </nav>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="bg-gray-100 rounded-lg overflow-hidden relative">
-                <Image
-                  src={
-                    variants.find(
-                      (variant: any) => variant.id === selectedVariant
-                    )?.image.src ?? variants[0].image.src
-                  }
-                  alt=""
-                  className=" object-cover object-center"
-                  width={464}
-                  height={266}
-                />
-              </div>
+            <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+              <Carousel slide={false}>
+                {variants.map((variant: any) => {
+                  return (
+                    <div key={variant.id}>
+                      <img
+                        src={variant.image.src}
+                        alt={variant.title}
+                        className="object-cover w-full rounded-md md:h-96"
+                      />
+                    </div>
+                  );
+                })}
+              </Carousel>
             </div>
 
             <div className="md:py-8">
@@ -240,33 +264,43 @@ function Product({ product }: any) {
                 </span>
 
                 <div className="flex flex-wrap gap-3">
-                  {product.productType === "shoes"
-                    ? shoeSizes.map((size) => (
-                        <button
-                          onClick={() => handleSizeChange(size)}
-                          type="button"
-                          className={`w-12 h-8 flex justify-center items-center bg-white hover:bg-gray-100 active:bg-gray-200 text-gray-800 text-sm font-semibold text-center border rounded-md transition duration-100 ${
-                            size === selectedSize ? "selected" : ""
-                          }`}
-                        >
-                          {`UK ${size}`}
-                        </button>
-                      ))
-                    : product.productType === "hoodie" ||
-                      product.productType === "t-shirt" ||
-                      product.productType === "jacket"
-                    ? clothingSizes.map((size) => (
-                        <button
-                          onClick={() => handleSizeChange(size)}
-                          type="button"
-                          className={`w-12 h-8 flex justify-center items-center bg-white hover:bg-gray-100 active:bg-gray-200 text-gray-800 text-sm font-semibold text-center border rounded-md transition duration-100 ${
-                            size === selectedSize ? "selected" : ""
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      ))
-                    : null}
+                  {product.productType === "shoes" ? (
+                    shoeSizes.map((size) => (
+                      <button
+                        onClick={() => handleSizeChange(size)}
+                        type="button"
+                        className={`w-12 h-8 flex justify-center items-center bg-white hover:bg-gray-100 active:bg-gray-200 text-gray-800 text-sm font-semibold text-center border rounded-md transition duration-100 ${
+                          size === selectedSize ? "selected" : ""
+                        }`}
+                      >
+                        {`UK ${size}`}
+                      </button>
+                    ))
+                  ) : product.productType === "hoodie" ||
+                    product.productType === "t-shirt" ||
+                    product.productType === "jacket" ? (
+                    clothingSizes.map((size) => (
+                      <button
+                        onClick={() => handleSizeChange(size)}
+                        type="button"
+                        className={`w-12 h-8 flex justify-center items-center bg-white hover:bg-gray-100 active:bg-gray-200 text-gray-800 text-sm font-semibold text-center border rounded-md transition duration-100 ${
+                          size === selectedSize ? "selected" : ""
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))
+                  ) : product.productType === "handbag" ? (
+                    <button
+                      onClick={() => handleSizeChange("One Size")}
+                      type="button"
+                      className={`w-14 h-12 flex justify-center items-center bg-white hover:bg-gray-100 active:bg-gray-200 text-gray-800 text-sm font-semibold text-center border rounded-md transition duration-100 ${
+                        "One Size" === selectedSize ? "selected" : ""
+                      }`}
+                    >
+                      {"One Size"}
+                    </button>
+                  ) : null}
                 </div>
               </div>
 
