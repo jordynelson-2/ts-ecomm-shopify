@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import client from "../../lib/client";
 import { useCartDispatch, useCartState } from "../../context/cart";
@@ -6,7 +6,10 @@ import cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
-import { Carousel } from "flowbite-react";
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { FaArrowCircleRight } from "react-icons/fa";
+import "react-image-gallery/styles/css/image-gallery.css";
+import ImageGallery from "react-image-gallery";
 
 export const getStaticPaths = async () => {
   const res = await client.product.fetchAll(100);
@@ -39,37 +42,27 @@ const clothingSizes = ["S", "M", "L", "XL", "XXL"];
 function Product({ product }: any) {
   product = JSON.parse(product);
   const variants = product.variants;
+  const variantImages = variants.map((variant: any) => {
+    return {
+      original: variant.image.src,
+      thumbnail: variant.image.src,
+    };
+  });
+
   const { state } = useCartState();
   const { setCart } = useCartDispatch();
   const [selectedVariant, setSelectedVariant] = useState(variants[0].id);
   const [selectedSize, setSelectedSize] = useState("");
+  const galleryRef: any = useRef(null);
 
   const handleVariantChange = (title: string) => {
     setSelectedVariant(title);
 
-    //get the element with an element = data-testid="carousel"
-    const carousel = document.querySelector("[data-testid='carousel']");
-    //console.log(carousel);
-
-    //get the html element of the first direct child of the carousel
-    const firstChild = carousel?.firstElementChild;
-    //console.log(firstChild);
-
-    //there is 3 div elements inside firstChild with the data-testid="carousel-item", get them and add them to an array
-
-    const carouselItems = Array.from(
-      firstChild?.querySelectorAll("[data-testid='carousel-item']") ?? []
-    );
-
-    //console.log(carouselItems);
-
-    //get the index of the selected variant
-    const index = variants.findIndex((variant: any) => variant.id === title);
-    //console.log(index);
-
-    //get the element with the data-testid="carousel-item" that matches the index of the selected variant
-    const selectedCarouselItem = carouselItems[index];
-    console.log(selectedCarouselItem);
+    variants.map((variant: any, index: any) => {
+      if (variant.id === title) {
+        galleryRef.current.slideToIndex(index);
+      }
+    });
   };
 
   const handleSizeChange = (size: string) => {
@@ -207,19 +200,15 @@ function Product({ product }: any) {
           </nav>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-              <Carousel slide={false}>
-                {variants.map((variant: any) => {
-                  return (
-                    <div key={variant.id}>
-                      <img
-                        src={variant.image.src}
-                        alt={variant.title}
-                        className="object-cover w-full rounded-md md:h-96"
-                      />
-                    </div>
-                  );
-                })}
-              </Carousel>
+              <ImageGallery
+                items={variantImages}
+                showNav={false}
+                showFullscreenButton={false}
+                showPlayButton={false}
+                showBullets={false}
+                ref={galleryRef}
+                showThumbnails={false}
+              />
             </div>
 
             <div className="md:py-8">
@@ -247,7 +236,6 @@ function Product({ product }: any) {
                 <select
                   onChange={(e) => {
                     handleVariantChange(e.target.value);
-                    setSelectedVariant(e.target.value);
                   }}
                   value={selectedVariant}
                   className="border-[#4f46e5] border-2 rounded-md p-2"
