@@ -5,7 +5,6 @@ import { useCartDispatch, useCartState } from "../../context/cart";
 import cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-i;
 import "react-image-gallery/styles/css/image-gallery.css";
 import ImageGallery from "react-image-gallery";
 
