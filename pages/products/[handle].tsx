@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+
 import Link from "next/link";
 import client from "../../lib/client";
 import { useCartDispatch, useCartState } from "../../context/cart";
@@ -196,15 +197,56 @@ function Product({ product }: any) {
             </ol>
           </nav>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+            <div className="h-64  xl:h-80 2xl:h-96">
               <ImageGallery
                 items={variantImages}
-                showNav={false}
+                showNav={true}
                 showFullscreenButton={false}
                 showPlayButton={false}
                 showBullets={false}
                 ref={galleryRef}
                 showThumbnails={false}
+                //custom left arrow
+                renderLeftNav={(onClick, disabled) => (
+                  <button
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+                    onClick={onClick}
+                    disabled={disabled}
+                  >
+                    <svg
+                      className="w-8 h-8 text-gray-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                )}
+                renderRightNav={(onClick, disabled) => (
+                  <button
+                    className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10"
+                    onClick={onClick}
+                    disabled={disabled}
+                  >
+                    <svg
+                      className="w-8 h-8 text-gray-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                )}
               />
             </div>
 
