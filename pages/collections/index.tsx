@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Head from "next/head";
 import { useShopify } from "../../context/collection";
 
 function Collections() {
@@ -6,6 +6,9 @@ function Collections() {
 
   return (
     <>
+      <Head>
+        <title>Collections | Tuck's Shop</title>
+      </Head>
       <div className="mx-auto max-w-screen-2xl px-4 mb-10 md:px-8">
         <div className="mb-10 md:mb-16">
           <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-
+import Head from "next/head";
 import Link from "next/link";
 import client from "../../lib/client";
 import { useCartDispatch, useCartState } from "../../context/cart";
@@ -67,6 +67,12 @@ function Product({ product }: any) {
     setSelectedSize(size);
   };
 
+  const handleRightNavClick = () => {
+    //When the right nav is clicked, we want to change the variant in the select dropdown to the current variant displayed in the gallery
+    const currentVariant = variants[galleryRef.current.getCurrentIndex()].id;
+    setSelectedVariant(currentVariant);
+  };
+
   const addToCart = async () => {
     if (selectedVariant === "" || selectedSize === "") {
       toast.error("Please select a size and colour!", {
@@ -100,6 +106,9 @@ function Product({ product }: any) {
 
   return (
     <>
+      <Head>
+        <title>{product.title} | Tuck's Shop</title>
+      </Head>
       <div className="bg-white py-6 sm:py-8 lg:py-12">
         <div className="max-w-screen-lg px-4 md:px-8 mx-auto">
           <nav className="flex  mb-4" aria-label="Breadcrumb">

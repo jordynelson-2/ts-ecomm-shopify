@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Head from "next/head";
 import Link from "next/link";
 import Modal from "../components/Modal";
 
@@ -7,6 +8,9 @@ function Home() {
 
   return (
     <>
+      <Head>
+        <title>Home </title>
+      </Head>
       <h1 className="text-center text-2xl mb-4 md:text-3xl lg:text-5xl font-bold text-inter px-8">
         the brands you{" "}
         <span>
