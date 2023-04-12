@@ -47,11 +47,13 @@ function Navbar() {
   return (
     <nav>
       <div className="flex justify-between items-center h-24 max-w-xl md:max-w-5xl mx-auto px-4">
-        <img
-          src="/ts-plug.svg"
-          className="h-[60px] w-[60px] object-contain"
-          alt="Tuckshop"
-        />
+        <Link href={"/"}>
+          <img
+            src="/ts-plug.svg"
+            className="h-[60px] w-[60px] object-contain"
+            alt="Tuckshop"
+          />
+        </Link>
         <ul className=" hidden md:flex gap-2 text-l font-semibold text-inter capitalize">
           <li>
             <Link href="/">Home</Link>

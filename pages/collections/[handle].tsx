@@ -50,7 +50,7 @@ function Collection() {
   return (
     <>
       <Head>
-        <title>{capitalize(`${handle?.toString()} | Tuck's Shop` || "")}</title>
+        <title>{capitalize(`${handle?.toString()} | Tuck's Shop`)}</title>
       </Head>
       <div className="mx-auto max-w-screen-2xl px-4 mb-10 md:px-8">
         <div className="mb-10 md:mb-16">

@@ -314,6 +314,8 @@ function Product({ product }: any) {
                     ))
                   ) : product.productType === "hoodie" ||
                     product.productType === "t-shirt" ||
+                    product.productType === "trousers" ||
+                    product.productType === "coat" ||
                     product.productType === "jacket" ? (
                     clothingSizes.map((size) => (
                       <button
