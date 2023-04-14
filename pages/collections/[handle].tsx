@@ -16,7 +16,7 @@ function Collection() {
       if (collection.handle === handle) {
         const res = client.collection
           .fetchWithProducts(collection.id, {
-            productsFirst: 10,
+            productsFirst: 100,
           })
           .then((res: any) => {
             const serializedProducts = res.products.map((product: any) => {
