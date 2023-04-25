@@ -10,6 +10,31 @@ function Collection() {
   const router = useRouter();
   const { handle } = router.query;
   const [products, setProducts] = useState<any>([]);
+  const [productCategory, setProductCategory] = useState("all");
+  const brandsList = [
+    "Nike",
+    "Adidas",
+    "NB",
+    "Patagonia",
+    "TNF",
+    "Yeezy",
+    "Hoka",
+    "Salomon",
+    "Balenciaga",
+    "Moncler",
+    "Kanye",
+    "Palm Angels",
+    "Arc'teryx",
+    "Palace",
+    "FOG",
+    "Corteiz",
+    "Trapstar",
+    "Marc Jacobs",
+    "Veja",
+    "Stussy",
+  ];
+  let brandsArray: any = [];
+  let filteredProducts: any = [{}];
 
   const getProductsFromCollection = () => {
     collections.map((collection: any) => {
@@ -37,6 +62,39 @@ function Collection() {
       }
     });
   };
+
+  function createArrayIfBrandExistsInsideOfProducts() {
+    brandsList.map((brand) => {
+      products.map((product: any) => {
+        if (product.title.includes(brand)) {
+          //only push if brandsArray doesn't already have the brand
+          if (!brandsArray.includes(brand)) {
+            brandsArray.push(brand);
+          }
+        }
+      });
+    });
+  }
+  createArrayIfBrandExistsInsideOfProducts();
+
+  function createFilteredArrayForEachBrandThatExistsInsideBrandsArray() {
+    brandsArray.map((brand: any) => {
+      filteredProducts[brand] = products.filter((product: any) =>
+        product.title.includes(brand)
+      );
+    });
+  }
+  createFilteredArrayForEachBrandThatExistsInsideBrandsArray();
+
+  function chooseWhichProductsToShow() {
+    if (productCategory === "all") {
+      return products;
+    } else {
+      return filteredProducts[productCategory];
+    }
+  }
+
+  const productsToShow = chooseWhichProductsToShow();
 
   //function to capetalize the handle
   const capitalize = (str: string) => {
@@ -122,8 +180,21 @@ function Collection() {
             </li>
           </ol>
         </nav>
+        <div className="flex ml-6 mb-6 gap-4">
+          {brandsArray.map((brand: any) => (
+            <button
+              onClick={() => setProductCategory(brand)}
+              disabled={productCategory === brand}
+              type="button"
+              className="inline-block rounded border-2 border-neutral-800 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:border-neutral-800 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-800 focus:border-neutral-800 focus:text-neutral-800 focus:outline-none focus:ring-0 active:border-neutral-900 active:text-neutral-900 dark:border-neutral-900 dark:text-neutral-900 dark:hover:border-neutral-900 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10 dark:hover:text-neutral-900 dark:focus:border-neutral-900 dark:focus:text-neutral-900 dark:active:border-neutral-900 dark:active:text-neutral-900"
+              data-te-ripple-init
+            >
+              {brand}
+            </button>
+          ))}
+        </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-8 px-6">
-          {products.map((product: any) => (
+          {productsToShow.map((product: any) => (
             <div>
               <a
                 href={`/products/${product.handle}`}
