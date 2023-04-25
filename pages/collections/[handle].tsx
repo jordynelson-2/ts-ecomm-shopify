@@ -10,7 +10,7 @@ function Collection() {
   const router = useRouter();
   const { handle } = router.query;
   const [products, setProducts] = useState<any>([]);
-  const [productCategory, setProductCategory] = useState("all");
+  const [productCategory, setProductCategory] = useState("All");
   const brandsList = [
     "Nike",
     "Adidas",
@@ -87,7 +87,7 @@ function Collection() {
   createFilteredArrayForEachBrandThatExistsInsideBrandsArray();
 
   function chooseWhichProductsToShow() {
-    if (productCategory === "all") {
+    if (productCategory === "All") {
       return products;
     } else {
       return filteredProducts[productCategory];
@@ -180,14 +180,29 @@ function Collection() {
             </li>
           </ol>
         </nav>
-        <div className="flex ml-6 mb-6 gap-4">
+        <div className="flex flex-wrap ml-6 mb-6 gap-4">
+          <button
+            onClick={() => setProductCategory("All")}
+            disabled={productCategory === "All"}
+            type="button"
+            className={`inline-block rounded border-2 border-neutral-800 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal  transition duration-150 ease-in-out hover:border-neutral-800 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-800  ${
+              productCategory === "All"
+                ? "bg-neutral-800 text-white"
+                : "text-neutral-800"
+            }`}
+          >
+            All
+          </button>
           {brandsArray.map((brand: any) => (
             <button
               onClick={() => setProductCategory(brand)}
               disabled={productCategory === brand}
               type="button"
-              className="inline-block rounded border-2 border-neutral-800 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:border-neutral-800 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-800 focus:border-neutral-800 focus:text-neutral-800 focus:outline-none focus:ring-0 active:border-neutral-900 active:text-neutral-900 dark:border-neutral-900 dark:text-neutral-900 dark:hover:border-neutral-900 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10 dark:hover:text-neutral-900 dark:focus:border-neutral-900 dark:focus:text-neutral-900 dark:active:border-neutral-900 dark:active:text-neutral-900"
-              data-te-ripple-init
+              className={`inline-block rounded border-2 border-neutral-800 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal  transition duration-150 ease-in-out hover:border-neutral-800 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-800  ${
+                productCategory === brand
+                  ? "bg-neutral-800 text-white"
+                  : "text-neutral-800"
+              }`}
             >
               {brand}
             </button>
