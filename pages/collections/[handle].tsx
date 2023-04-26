@@ -228,10 +228,12 @@ function Collection() {
                   href="#"
                   className="text-gray-500 hover:gray-800 lg:text-lg transition duration-100 mb-1"
                 >
-                  {product.title
-                    .replace(/i/g, "1")
-                    .replace(/e/g, "3")
-                    .replace(/o/g, "0")}
+                  {
+                    product.title
+                    // .replace(/i/g, "1")
+                    // .replace(/e/g, "3")
+                    // .replace(/o/g, "0")
+                  }
                 </a>
               </div>
               <div className="flex items-end gap-2">

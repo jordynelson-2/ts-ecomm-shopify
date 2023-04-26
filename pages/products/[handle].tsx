@@ -262,16 +262,20 @@ function Product({ product }: any) {
             <div className="md:py-8">
               <div className="mb-2 md:mb-3">
                 <span className="inline-block text-gray-500 mb-0.5">
-                  {product.title
-                    .replace(/i/g, "1")
-                    .replace(/e/g, "3")
-                    .replace(/o/g, "0")}
+                  {
+                    product.title
+                    // .replace(/i/g, "1")
+                    // .replace(/e/g, "3")
+                    // .replace(/o/g, "0")
+                  }
                 </span>
                 <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold">
-                  {product.title
-                    .replace(/i/g, "1")
-                    .replace(/e/g, "3")
-                    .replace(/o/g, "0")}
+                  {
+                    product.title
+                    // .replace(/i/g, "1")
+                    // .replace(/e/g, "3")
+                    // .replace(/o/g, "0")
+                  }
                 </h2>
               </div>
 
