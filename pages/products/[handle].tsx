@@ -10,7 +10,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import ImageGallery from "react-image-gallery";
 
 export const getStaticPaths = async () => {
-  const res = await client.product.fetchAll(100);
+  const res = await client.product.fetchAll(200);
   const paths = res.map((product: any) => {
     return {
       params: { handle: product.handle.toString() },
@@ -51,6 +51,7 @@ function Product({ product }: any) {
   const { setCart } = useCartDispatch();
   const [selectedVariant, setSelectedVariant] = useState(variants[0].id);
   const [selectedSize, setSelectedSize] = useState("");
+
   const galleryRef: any = useRef(null);
 
   const handleVariantChange = (title: string) => {
@@ -65,12 +66,6 @@ function Product({ product }: any) {
 
   const handleSizeChange = (size: string) => {
     setSelectedSize(size);
-  };
-
-  const handleRightNavClick = () => {
-    //When the right nav is clicked, we want to change the variant in the select dropdown to the current variant displayed in the gallery
-    const currentVariant = variants[galleryRef.current.getCurrentIndex()].id;
-    setSelectedVariant(currentVariant);
   };
 
   const addToCart = async () => {

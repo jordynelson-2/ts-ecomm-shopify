@@ -11,6 +11,8 @@ function Collection() {
   const { handle } = router.query;
   const [products, setProducts] = useState<any>([]);
   const [productCategory, setProductCategory] = useState("All");
+  const [displayedProducts, setDisplayedProducts] = useState(20);
+
   const brandsList = [
     "Nike",
     "Adidas",
@@ -32,6 +34,7 @@ function Collection() {
     "Marc Jacobs",
     "Veja",
     "Stussy",
+    "LV",
   ];
   let brandsArray: any = [];
   let filteredProducts: any = [{}];
@@ -88,9 +91,9 @@ function Collection() {
 
   function chooseWhichProductsToShow() {
     if (productCategory === "All") {
-      return products;
+      return products.slice(0, displayedProducts);
     } else {
-      return filteredProducts[productCategory];
+      return filteredProducts[productCategory].slice(0, displayedProducts);
     }
   }
 
@@ -101,6 +104,18 @@ function Collection() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const setHeadTitle = () => {
+    if (handle) {
+      return `${capitalize(handle?.toString())} | Tuck's Shop`;
+    } else {
+      return "Tuck's Shop";
+    }
+  };
+
+  useEffect(() => {
+    setHeadTitle();
+  }, [handle]);
+
   useEffect(() => {
     getProductsFromCollection();
   }, [handle, collections]);
@@ -108,7 +123,7 @@ function Collection() {
   return (
     <>
       <Head>
-        <title>{capitalize(`${handle?.toString()} | Tuck's Shop`)}</title>
+        <title>{setHeadTitle()}</title>
       </Head>
       <div className="mx-auto max-w-screen-2xl px-4 mb-10 md:px-8">
         <div className="mb-10 md:mb-16">
@@ -208,7 +223,7 @@ function Collection() {
             </button>
           ))}
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-8 px-6">
+        <div className="grid mt-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-8 px-6">
           {productsToShow.map((product: any) => (
             <div>
               <a
@@ -244,6 +259,20 @@ function Collection() {
             </div>
           ))}
         </div>
+        {displayedProducts <
+          (productCategory === "All"
+            ? products
+            : filteredProducts[productCategory]
+          ).length && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setDisplayedProducts(displayedProducts + 12)}
+              className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
