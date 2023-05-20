@@ -201,7 +201,7 @@ function Product({ product }: any) {
             </ol>
           </nav>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="h-64  xl:h-80 2xl:h-96">
+            <div className="h-auto ">
               <ImageGallery
                 items={variantImages}
                 showNav={true}
