@@ -209,8 +209,7 @@ function Product({ product }: any) {
                 showPlayButton={false}
                 showBullets={false}
                 ref={galleryRef}
-                showThumbnails={false}
-                //custom left arrow
+                showThumbnails={false} //custom left arrow
                 renderLeftNav={(onClick, disabled) => (
                   <button
                     className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"

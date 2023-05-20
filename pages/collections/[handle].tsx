@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 import client from "../../lib/client";
 
 function Collection() {
@@ -242,10 +243,12 @@ function Collection() {
                 href={`/products/${product.handle}`}
                 className="group h-80 block bg-gray-100 rounded-lg overflow-hidden relative mb-2 lg:mb-3"
               >
-                <img
+                <Image
                   src={product.images[0].src}
+                  width={400}
+                  height={300}
                   loading="lazy"
-                  alt="Photo by Irene Kredenets"
+                  alt={product.title}
                   className=" w-full h-full object-cover object-center group-hover:scale-110 transition duration-200 "
                 />
               </a>

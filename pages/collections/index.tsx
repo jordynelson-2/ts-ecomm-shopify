@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import { useShopify } from "../../context/collection";
 
 function Collections() {
@@ -22,9 +23,11 @@ function Collections() {
                 href={`/collections/${collection.handle}`}
                 className="group relative flex h-80 items-end overflow-hidden rounded-lg bg-gray-100 p-4 shadow-lg"
               >
-                <img
+                <Image
                   src={collection.image.src}
                   loading="lazy"
+                  width={400}
+                  height={300}
                   alt={collection.title}
                   className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110"
                 />

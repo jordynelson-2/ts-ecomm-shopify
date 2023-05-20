@@ -116,7 +116,7 @@ function Cart() {
                           src={item.variant.image.src}
                           width={400}
                           height={300}
-                          alt="Photo by Thái An"
+                          alt={item.title}
                           className="  object-cover object-center group-hover:scale-110 transition duration-200 rounded-md"
                         />
                       </div>
