@@ -37,11 +37,7 @@ function Home() {
             >
               How It Works
             </button>
-            <Modal
-              showModal={showModal}
-              setShowModal={setShowModal}
-              description="test"
-            />
+            <Modal showModal={showModal} setShowModal={setShowModal} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 mb-6">
             <div className="flex gap-2">

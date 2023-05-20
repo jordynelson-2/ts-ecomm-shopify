@@ -33,7 +33,6 @@ function Cart() {
     client.checkout
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((res: any) => {
-        //console.log(res);
         setCart(res);
       });
   };
@@ -59,7 +58,6 @@ function Cart() {
     client.checkout
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((res: any) => {
-        //console.log(res);
         setCart(res);
       });
   };
@@ -72,7 +70,6 @@ function Cart() {
     client.checkout
       .removeLineItems(checkoutId, lineItemIdsToRemove)
       .then((res: any) => {
-        //console.log(res);
         setCart(res);
       });
   };
@@ -218,11 +215,6 @@ function Cart() {
                   <span>Subtotal</span>
                   <span>{`£${parseInt(amount)}`}</span>
                 </div>
-                {/* 
-              <div className="flex justify-between text-gray-500 gap-4">
-                <span>Shipping</span>
-                <span>$4.99</span>
-              </div> */}
               </div>
 
               <div className="border-t pt-4 mt-4">

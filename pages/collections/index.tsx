@@ -25,7 +25,7 @@ function Collections() {
                 <img
                   src={collection.image.src}
                   loading="lazy"
-                  alt="Photo by Fakurian Design"
+                  alt={collection.title}
                   className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110"
                 />
 

@@ -7,14 +7,12 @@ import {
   AiOutlineShoppingCart,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
-import { GiClothes } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 const links = [
   { name: "Home", to: "/", logo: AiFillHome, id: 1 },
-  { name: "Collections", to: "/collections", logo: HiOutlineCollection, id: 1 },
-  // { name: "Products", to: "/products", logo: GiClothes, id: 2 },
+  { name: "Collections", to: "/collections", logo: HiOutlineCollection, id: 2 },
   { name: "Cart", to: "/cart", logo: AiOutlineShoppingCart, id: 3 },
   { name: "About", to: "/about", logo: AiOutlineInfoCircle, id: 4 },
 ];
@@ -61,9 +59,6 @@ function Navbar() {
           <li>
             <Link href="/collections">Collections</Link>
           </li>
-          {/* <li>
-            <Link href="/products">Products</Link>
-          </li> */}
           <li>
             <Link href="/cart">Cart</Link>
           </li>

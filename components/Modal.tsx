@@ -2,7 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaWindowClose } from "react-icons/fa";
 
-function Modal({ showModal, setShowModal, description }: any) {
+function Modal({ showModal, setShowModal }: any) {
   return (
     <>
       <AnimatePresence>
@@ -19,7 +19,6 @@ function Modal({ showModal, setShowModal, description }: any) {
               animate={{ y: 0 }}
             >
               <div className="modal-header flex flex-row-reverse">
-                {/* <p className="modal-tech-title">{techType}</p> */}
                 <motion.button
                   className="close-modal-btn"
                   whileTap={{ scale: 0.9 }}

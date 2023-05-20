@@ -2,11 +2,14 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import client from "../lib/client";
 import Cookies from "js-cookie";
 
+//1.Create the context - one for State and one for Dispatch
 const CartStateContext = createContext();
 const CartDispatchContext = createContext();
 
+//SET_CART action type
 const SET_CART = "SET_CART";
 
+//Set the initial state
 const initalState = {
   lineItems: [],
   totalPrice: 0,
@@ -14,17 +17,17 @@ const initalState = {
   id: "",
 };
 
+//2.Create the reducer function that will update the state based on the action type
 const reducer = (state, action) => {
   switch (action.type) {
     case SET_CART:
-      return { ...state, ...action.payload };
-    case SET_COLLECTIONS:
       return { ...state, ...action.payload };
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
 };
 
+//3.Create the provider component that will wrap the app and provide the state and dispatch to all components
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initalState);
 
@@ -59,5 +62,6 @@ export const CartProvider = ({ children }) => {
   );
 };
 
+//4.Create custom hooks to use the state and dispatch
 export const useCartState = () => useContext(CartStateContext);
 export const useCartDispatch = () => useContext(CartDispatchContext);

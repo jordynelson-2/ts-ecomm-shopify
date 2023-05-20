@@ -12,6 +12,7 @@ function Collection() {
   const [products, setProducts] = useState<any>([]);
   const [productCategory, setProductCategory] = useState("All");
   const [displayedProducts, setDisplayedProducts] = useState(20);
+  const [amountOfProducts, setAmountOfProducts] = useState(0);
 
   const brandsList = [
     "Nike",
@@ -35,6 +36,7 @@ function Collection() {
     "Veja",
     "Stussy",
     "LV",
+    "Gallery Dept",
   ];
   let brandsArray: any = [];
   let filteredProducts: any = [{}];
@@ -66,6 +68,7 @@ function Collection() {
     });
   };
 
+  //function to get the list of brands from the products as there is no way to get the brands from the shopify api using the SDK
   function createArrayIfBrandExistsInsideOfProducts() {
     brandsList.map((brand) => {
       products.map((product: any) => {
@@ -80,6 +83,7 @@ function Collection() {
   }
   createArrayIfBrandExistsInsideOfProducts();
 
+  //function to create an array for each brand that exists inside of the brandsArray with their associated products
   function createFilteredArrayForEachBrandThatExistsInsideBrandsArray() {
     brandsArray.map((brand: any) => {
       filteredProducts[brand] = products.filter((product: any) =>
@@ -89,6 +93,7 @@ function Collection() {
   }
   createFilteredArrayForEachBrandThatExistsInsideBrandsArray();
 
+  //function to choose which products to show based on the productCategory
   function chooseWhichProductsToShow() {
     if (productCategory === "All") {
       return products.slice(0, displayedProducts);
@@ -101,7 +106,9 @@ function Collection() {
 
   //function to capetalize the handle
   const capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return str === "t-shirts"
+      ? (str = "T-Shirts")
+      : str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const setHeadTitle = () => {
@@ -119,6 +126,10 @@ function Collection() {
   useEffect(() => {
     getProductsFromCollection();
   }, [handle, collections]);
+
+  useEffect(() => {
+    setAmountOfProducts(productsToShow.length);
+  }, [productsToShow]);
 
   return (
     <>
@@ -189,7 +200,8 @@ function Collection() {
                   ></path>
                 </svg>
                 <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
-                  {capitalize(handle?.toString() || "")}
+                  {capitalize(handle?.toString() || "") +
+                    ` (${amountOfProducts})`}
                 </span>
               </div>
             </li>
@@ -251,14 +263,13 @@ function Collection() {
                   }
                 </a>
               </div>
-              <div className="flex items-end gap-2">
-                {/* <span className="text-gray-800 lg:text-lg font-bold">
-                  {`£${parseInt(product.variants[0].price.amount)}`}
-                </span> */}
-              </div>
             </div>
           ))}
         </div>
+        {/*Check if the number of displayed products is less than the total number of products in the current category
+          If true, use products.length, otherwise use filteredProducts[productCategory].length. This is used to 
+          determine whether or not to show the load more button.
+        */}
         {displayedProducts <
           (productCategory === "All"
             ? products
