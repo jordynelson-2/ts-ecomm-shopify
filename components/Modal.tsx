@@ -1,8 +1,32 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaWindowClose } from "react-icons/fa";
+import { ModalProps, Step } from "../types";
 
-function Modal({ showModal, setShowModal }: any) {
+function Modal({ showModal, setShowModal }: ModalProps) {
+  const steps: Step[] = [
+    {
+      title: "Place Order",
+      description:
+        "Place order via our website using our secure payment with Shopify.",
+    },
+    {
+      title: "Quality Control Pictures",
+      description:
+        "When your items are ready, we will send you quality control pictures for your approval.",
+    },
+    {
+      title: "Order Shipped",
+      description:
+        "Once we have your approval, we will ship your order. Depending on your location, we will use AnPost or RoyalMail via EMS",
+    },
+    {
+      title: "Receive Tracking",
+      description:
+        "When your order is shipped, you will receive a tracking lnumber within 2 business days.",
+    },
+  ];
+
   return (
     <>
       <AnimatePresence>
