@@ -1,10 +1,9 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaWindowClose } from "react-icons/fa";
-import { ModalProps, Step } from "../types";
 
-function Modal({ showModal, setShowModal }: ModalProps) {
-  const steps: Step[] = [
+function Modal({ showModal, setShowModal }: any) {
+  const steps: any = [
     {
       title: "Place Order",
       description:

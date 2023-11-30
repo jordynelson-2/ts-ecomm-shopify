@@ -31,12 +31,12 @@ function Home() {
             >
               Shop Now
             </Link>
-            <button
+            {/* <button
               onClick={() => setShowModal(true)}
               className="button  bg-white hover:bg-gray-100 active:bg-gray-200 focus-visible:ring ring-indigo-300 border text-gray-500 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
             >
               How It Works
-            </button>
+            </button> */}
             <Modal showModal={showModal} setShowModal={setShowModal} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 mb-6">
