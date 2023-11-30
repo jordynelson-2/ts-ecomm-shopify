@@ -50,7 +50,7 @@ function Navbar() {
         <div className="bg-black text-white text-center py-2 px-4 flex justify-center items-center">
           <p className="flex text-sm md:text-base">
             <strong>
-              If you want to purchase an item, pelase DM us on IG! - @tucks_shop
+              If you want to purchase an item, please DM us on IG! - @tucks_shop
             </strong>
           </p>
         </div>
