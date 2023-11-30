@@ -129,7 +129,9 @@ function Collection() {
   }, [handle, collections]);
 
   useEffect(() => {
-    setAmountOfProducts(productsToShow.length);
+    setAmountOfProducts(
+      productCategory == "All" ? products.length : productsToShow.length
+    );
   }, [productsToShow]);
 
   return (
