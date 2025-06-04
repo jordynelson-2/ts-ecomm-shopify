@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import client from "../lib/client";
+import client from "../lib/shopifyClient";
+import { gql } from "graphql-request";
 import Cookies from "js-cookie";
 
 //1.Create the context - one for State and one for Dispatch
@@ -37,14 +38,58 @@ export const CartProvider = ({ children }) => {
 
   const setCart = (payload) => dispatch({ type: SET_CART, payload });
 
+  const CHECKOUT_FIELDS = `
+    id
+    webUrl
+    totalPrice: totalPriceV2 { amount }
+    lineItems(first: 250) {
+      edges {
+        node {
+          id
+          title
+          quantity
+          customAttributes { key value }
+          variant {
+            id
+            title
+            image { url }
+            priceV2 { amount }
+          }
+        }
+      }
+    }
+  `;
+
+  const CHECKOUT_QUERY = gql`
+    query getCheckout($id: ID!) {
+      node(id: $id) {
+        ... on Checkout {
+          ${CHECKOUT_FIELDS}
+        }
+      }
+    }
+  `;
+
+  const CHECKOUT_CREATE = gql`
+    mutation checkoutCreate {
+      checkoutCreate(input: {}) {
+        checkout {
+          ${CHECKOUT_FIELDS}
+        }
+      }
+    }
+  `;
+
   const getCart = async () => {
     try {
       const checkoutId = Cookies.get("checkoutId");
       let cart;
       if (checkoutId) {
-        cart = await client.checkout.fetch(checkoutId);
+        const data = await client.request(CHECKOUT_QUERY, { id: checkoutId });
+        cart = data.node;
       } else {
-        cart = await client.checkout.create();
+        const data = await client.request(CHECKOUT_CREATE);
+        cart = data.checkoutCreate.checkout;
         Cookies.set("checkoutId", cart.id);
       }
       setCart(cart);

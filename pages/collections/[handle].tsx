@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
-import client from "../../lib/client";
+import client from "../../lib/shopifyClient";
+import { gql } from "graphql-request";
 
 function Collection() {
   const { collections } = useShopify();
@@ -42,31 +43,43 @@ function Collection() {
   let brandsArray: any = [];
   let filteredProducts: any = [{}];
 
-  const getProductsFromCollection = () => {
-    collections.map((collection: any) => {
-      if (collection.handle === handle) {
-        const res = client.collection
-          .fetchWithProducts(collection.id, {
-            productsFirst: 100,
-          })
-          .then((res: any) => {
-            const serializedProducts = res.products.map((product: any) => {
-              return {
-                id: product.id,
-                title: product.title,
-                handle: product.handle,
-                images: product.images.map((image: any) => {
-                  return {
-                    src: image.src,
-                    alt: image.altText,
-                  };
-                }),
-              };
-            });
-            setProducts(serializedProducts);
-          });
+  const getProductsFromCollection = async () => {
+    const COLLECTION_QUERY = gql`
+      query getCollection($handle: String!) {
+        collectionByHandle(handle: $handle) {
+          products(first: 100) {
+            edges {
+              node {
+                id
+                title
+                handle
+                images(first: 10) {
+                  edges {
+                    node {
+                      url
+                      altText
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-    });
+    `;
+
+    const data = await client.request(COLLECTION_QUERY, { handle });
+    const serializedProducts =
+      data.collectionByHandle?.products.edges.map(({ node }: any) => ({
+        id: node.id,
+        title: node.title,
+        handle: node.handle,
+        images: node.images.edges.map((img: any) => ({
+          src: img.node.url,
+          alt: img.node.altText,
+        })),
+      })) || [];
+    setProducts(serializedProducts);
   };
 
   //function to get the list of brands from the products as there is no way to get the brands from the shopify api using the SDK

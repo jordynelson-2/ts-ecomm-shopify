@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import client from "../../lib/client";
+import client from "../../lib/shopifyClient";
+import { gql } from "graphql-request";
 import { useCartDispatch, useCartState } from "../../context/cart";
 import cookie from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,12 +11,21 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import ImageGallery from "react-image-gallery";
 
 export const getStaticPaths = async () => {
-  const res = await client.product.fetchAll(200);
-  const paths = res.map((product: any) => {
-    return {
-      params: { handle: product.handle.toString() },
-    };
-  });
+  const PRODUCTS_QUERY = gql`
+    {
+      products(first: 200) {
+        edges {
+          node {
+            handle
+          }
+        }
+      }
+    }
+  `;
+  const res = await client.request(PRODUCTS_QUERY);
+  const paths = res.products.edges.map(({ node }: any) => ({
+    params: { handle: node.handle.toString() },
+  }));
 
   return {
     paths,
@@ -25,8 +35,32 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: any) => {
   const handle = context.params.handle;
-  const res = await client.product.fetchByHandle(handle);
-  const product = JSON.stringify(res);
+  const PRODUCT_QUERY = gql`
+    query getProduct($handle: String!) {
+      productByHandle(handle: $handle) {
+        id
+        title
+        handle
+        productType
+        variants(first: 100) {
+          edges {
+            node {
+              id
+              title
+              image {
+                url
+              }
+              priceV2 {
+                amount
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const res = await client.request(PRODUCT_QUERY, { handle });
+  const product = JSON.stringify(res.productByHandle);
   return {
     props: {
       product,
@@ -85,7 +119,41 @@ function Product({ product }: any) {
       },
     ];
 
-    const res = await client.checkout.addLineItems(checkoutId, lineItemsToAdd);
+    const CHECKOUT_FIELDS = `
+      id
+      webUrl
+      totalPrice: totalPriceV2 { amount }
+      lineItems(first: 250) {
+        edges {
+          node {
+            id
+            title
+            quantity
+            customAttributes { key value }
+            variant {
+              id
+              title
+              image { url }
+              priceV2 { amount }
+            }
+          }
+        }
+      }
+    `;
+
+    const ADD_LINES = gql`
+      mutation addLines($checkoutId: ID!, $lineItems: [CheckoutLineItemInput!]!) {
+        checkoutLineItemsAdd(checkoutId: $checkoutId, lineItems: $lineItems) {
+          checkout { ${CHECKOUT_FIELDS} }
+        }
+      }
+    `;
+
+    const data = await client.request(ADD_LINES, {
+      checkoutId,
+      lineItems: lineItemsToAdd,
+    });
+    const res = data.checkoutLineItemsAdd.checkout;
     if (cookie.get("checkoutId") === undefined) {
       cookie.set("checkoutId", res.id);
     }
