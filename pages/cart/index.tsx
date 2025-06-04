@@ -3,7 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { useCartState, useCartDispatch } from "../../context/cart";
-import client from "../../lib/client";
+import client from "../../lib/shopifyClient";
+import { gql } from "graphql-request";
 import cookie from "js-cookie";
 
 function Cart() {
@@ -12,7 +13,29 @@ function Cart() {
   const { totalPrice, lineItems } = state;
   const { amount } = totalPrice;
 
-  const incrementQuantity = (event: any) => {
+  const CHECKOUT_FIELDS = `
+    id
+    webUrl
+    totalPrice: totalPriceV2 { amount }
+    lineItems(first: 250) {
+      edges {
+        node {
+          id
+          title
+          quantity
+          customAttributes { key value }
+          variant {
+            id
+            title
+            image { url }
+            priceV2 { amount }
+          }
+        }
+      }
+    }
+  `;
+
+  const incrementQuantity = async (event: any) => {
     const itemId = event.target.dataset.itemId;
     const checkoutId = cookie.get("checkoutId");
     let lineItemsToUpdate: any = [];
@@ -30,14 +53,21 @@ function Cart() {
       }
     });
 
-    client.checkout
-      .updateLineItems(checkoutId, lineItemsToUpdate)
-      .then((res: any) => {
-        setCart(res);
-      });
+    const UPDATE_MUTATION = gql`
+      mutation update($checkoutId: ID!, $lineItems: [CheckoutLineItemUpdateInput!]!) {
+        checkoutLineItemsUpdate(checkoutId: $checkoutId, lineItems: $lineItems) {
+          checkout { ${CHECKOUT_FIELDS} }
+        }
+      }
+    `;
+    const data = await client.request(UPDATE_MUTATION, {
+      checkoutId,
+      lineItems: lineItemsToUpdate,
+    });
+    setCart(data.checkoutLineItemsUpdate.checkout);
   };
 
-  const decrementQuantity = (event: any) => {
+  const decrementQuantity = async (event: any) => {
     const itemId = event.target.dataset.itemId;
     const checkoutId = cookie.get("checkoutId");
     let lineItemsToUpdate: any = [];
@@ -55,23 +85,37 @@ function Cart() {
       }
     });
 
-    client.checkout
-      .updateLineItems(checkoutId, lineItemsToUpdate)
-      .then((res: any) => {
-        setCart(res);
-      });
+    const UPDATE_MUTATION = gql`
+      mutation update($checkoutId: ID!, $lineItems: [CheckoutLineItemUpdateInput!]!) {
+        checkoutLineItemsUpdate(checkoutId: $checkoutId, lineItems: $lineItems) {
+          checkout { ${CHECKOUT_FIELDS} }
+        }
+      }
+    `;
+    const data = await client.request(UPDATE_MUTATION, {
+      checkoutId,
+      lineItems: lineItemsToUpdate,
+    });
+    setCart(data.checkoutLineItemsUpdate.checkout);
   };
 
-  const delteItem = (event: any) => {
+  const delteItem = async (event: any) => {
     const itemId = event.target.dataset.itemId;
     const checkoutId = cookie.get("checkoutId");
     const lineItemIdsToRemove = [itemId];
 
-    client.checkout
-      .removeLineItems(checkoutId, lineItemIdsToRemove)
-      .then((res: any) => {
-        setCart(res);
-      });
+    const REMOVE_MUTATION = gql`
+      mutation remove($checkoutId: ID!, $lineItemIds: [ID!]!) {
+        checkoutLineItemsRemove(checkoutId: $checkoutId, lineItemIds: $lineItemIds) {
+          checkout { ${CHECKOUT_FIELDS} }
+        }
+      }
+    `;
+    const data = await client.request(REMOVE_MUTATION, {
+      checkoutId,
+      lineItemIds: lineItemIdsToRemove,
+    });
+    setCart(data.checkoutLineItemsRemove.checkout);
   };
 
   const isEmpty = lineItems.length === 0;

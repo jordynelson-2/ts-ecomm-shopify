@@ -25,3 +25,13 @@ pnpm create next-app --example with-tailwindcss with-tailwindcss-app
 ```
 
 Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+## Environment variables
+
+Create a `.env.local` file with the following values:
+
+```
+NEXT_PUBLIC_SHOPIFY_DOMAIN=your-shop-domain.myshopify.com
+NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=your-storefront-token
+```
+
