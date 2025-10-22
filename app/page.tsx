@@ -199,7 +199,7 @@ export default async function Home() {
                   Low Price Guarantee
                 </h3>
                 <p className="text-base text-gray-600 leading-relaxed">
-                  We guarantee that our prices won't be beaten! If so, we
+                  We guarantee that our prices won&apos;t be beaten! If so, we
                   promise to match it.
                 </p>
               </div>

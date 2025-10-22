@@ -21,7 +21,10 @@ export async function shopifyFetch<T>({
     });
 
     if (result.errors) {
-      throw new Error(result.errors.map((e: { message: string }) => e.message).join(', '));
+      const errorMessages = Array.isArray(result.errors)
+        ? result.errors.map((e: { message: string }) => e.message).join(', ')
+        : 'GraphQL Error';
+      throw new Error(errorMessages);
     }
 
     return result.data as T;
