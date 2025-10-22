@@ -18,7 +18,7 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
   // Extract unique product types
   const productTypes = useMemo(() => {
     return Array.from(
-      new Set(products.map((p) => p.productType).filter(Boolean))
+      new Set(products.map((p) => p.productType).filter((type): type is string => Boolean(type)))
     ).sort();
   }, [products]);
 
