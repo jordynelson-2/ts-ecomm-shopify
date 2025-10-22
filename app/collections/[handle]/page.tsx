@@ -95,7 +95,7 @@ export default async function CollectionPage({
         {products.length === 0 ? (
           <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg">
             <p className="font-semibold">No Products Found</p>
-            <p className="mt-2">This collection doesn't have any products yet.</p>
+            <p className="mt-2">This collection doesn&apos;t have any products yet.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
