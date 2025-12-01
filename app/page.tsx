@@ -207,29 +207,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="bg-[#6366f1] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
-            Join Our Newsletter
-          </h2>
-          <p className="text-indigo-100 mb-8 max-w-2xl mx-auto text-lg">
-            Subscribe to get special offers, free giveaways, and exclusive
-            deals.
-          </p>
-          <div className="max-w-md mx-auto flex gap-4">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg text-gray-900 font-medium placeholder:font-normal"
-            />
-            <button className="bg-white text-[#6366f1] px-7 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-md hover:shadow-lg">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
