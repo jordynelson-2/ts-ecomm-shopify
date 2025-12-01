@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <CartProvider>
           <Header />
-          <main className="min-h-screen">{children}</main>
+          <main>{children}</main>
           <Footer />
           <CartSidebar />
         </CartProvider>
