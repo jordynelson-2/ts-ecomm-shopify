@@ -24,7 +24,7 @@ export default async function ProductsPage() {
 
     try {
       while (hasNextPage) {
-        const data = await shopifyFetch<ProductsResponse>({
+        const data: ProductsResponse = await shopifyFetch<ProductsResponse>({
           query: GET_ALL_PRODUCTS,
           variables: { first: 250, after },
         });
