@@ -84,7 +84,7 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
           product.title.toLowerCase().includes(searchLower) ||
           product.description.toLowerCase().includes(searchLower) ||
           (product.productType?.toLowerCase().includes(searchLower) ?? false) ||
-          product.tags.some((tag) => tag.toLowerCase().includes(searchLower));
+          (product.tags?.some((tag) => tag.toLowerCase().includes(searchLower)) ?? false);
         if (!matchesSearch) return false;
       }
 
