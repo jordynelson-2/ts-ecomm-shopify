@@ -19,7 +19,7 @@ export default async function ProductsPage() {
   try {
     const data = await shopifyFetch<ProductsResponse>({
       query: GET_ALL_PRODUCTS,
-      variables: { first: 1000 },
+      variables: { first: 500 },
     });
     products = data.products.edges.map((edge) => edge.node);
   } catch (err) {
