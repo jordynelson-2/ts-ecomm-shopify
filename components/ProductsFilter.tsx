@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import { ShopifyProduct } from '@/lib/types';
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { ShopifyProduct } from "@/lib/types";
 
 interface ProductsFilterProps {
   products: ShopifyProduct[];
 }
 
 export default function ProductsFilter({ products }: ProductsFilterProps) {
-  const [selectedAvailability, setSelectedAvailability] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedAvailability, setSelectedAvailability] = useState<string[]>(
+    []
+  );
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +21,11 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
   // Extract unique product types
   const productTypes = useMemo(() => {
     return Array.from(
-      new Set(products.map((p) => p.productType).filter((type): type is string => Boolean(type)))
+      new Set(
+        products
+          .map((p) => p.productType)
+          .filter((type): type is string => Boolean(type))
+      )
     ).sort();
   }, [products]);
 
@@ -34,8 +41,10 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
     const maxPrice = Math.max(...allPrices);
 
     // Get currency symbol from first product
-    const currencyCode = products[0]?.priceRange.minVariantPrice.currencyCode || 'USD';
-    const currencySymbol = currencyCode === 'GBP' ? '£' : currencyCode === 'EUR' ? '€' : '$';
+    const currencyCode =
+      products[0]?.priceRange.minVariantPrice.currencyCode || "USD";
+    const currencySymbol =
+      currencyCode === "GBP" ? "£" : currencyCode === "EUR" ? "€" : "$";
 
     return [
       {
@@ -44,12 +53,16 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
         max: Math.ceil(maxPrice / 4),
       },
       {
-        label: `${currencySymbol}${Math.ceil(maxPrice / 4)} - ${currencySymbol}${Math.ceil(maxPrice / 2)}`,
+        label: `${currencySymbol}${Math.ceil(
+          maxPrice / 4
+        )} - ${currencySymbol}${Math.ceil(maxPrice / 2)}`,
         min: Math.ceil(maxPrice / 4),
         max: Math.ceil(maxPrice / 2),
       },
       {
-        label: `${currencySymbol}${Math.ceil(maxPrice / 2)} - ${currencySymbol}${Math.ceil(maxPrice * 0.75)}`,
+        label: `${currencySymbol}${Math.ceil(
+          maxPrice / 2
+        )} - ${currencySymbol}${Math.ceil(maxPrice * 0.75)}`,
         min: Math.ceil(maxPrice / 2),
         max: Math.ceil(maxPrice * 0.75),
       },
@@ -64,12 +77,26 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
   // Filter products
   const filteredProducts = useMemo(() => {
     const filtered = products.filter((product) => {
+      // Search filter
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        const matchesSearch =
+          product.title.toLowerCase().includes(searchLower) ||
+          product.description.toLowerCase().includes(searchLower) ||
+          (product.productType?.toLowerCase().includes(searchLower) ?? false) ||
+          product.tags.some((tag) => tag.toLowerCase().includes(searchLower));
+        if (!matchesSearch) return false;
+      }
+
       // Availability filter
       if (selectedAvailability.length > 0) {
-        if (selectedAvailability.includes('inStock') && !product.availableForSale)
+        if (
+          selectedAvailability.includes("inStock") &&
+          !product.availableForSale
+        )
           return false;
         if (
-          selectedAvailability.includes('outOfStock') &&
+          selectedAvailability.includes("outOfStock") &&
           product.availableForSale
         )
           return false;
@@ -77,7 +104,10 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
 
       // Product type filter
       if (selectedTypes.length > 0) {
-        if (!product.productType || !selectedTypes.includes(product.productType))
+        if (
+          !product.productType ||
+          !selectedTypes.includes(product.productType)
+        )
           return false;
       }
 
@@ -97,7 +127,14 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
     // Reset to page 1 when filters change
     setCurrentPage(1);
     return filtered;
-  }, [products, selectedAvailability, selectedTypes, selectedPriceRanges, priceRanges]);
+  }, [
+    products,
+    searchTerm,
+    selectedAvailability,
+    selectedTypes,
+    selectedPriceRanges,
+    priceRanges,
+  ]);
 
   // Paginate filtered products
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
@@ -109,9 +146,7 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
 
   const handleAvailabilityChange = (value: string) => {
     setSelectedAvailability((prev) =>
-      prev.includes(value)
-        ? prev.filter((v) => v !== value)
-        : [...prev, value]
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
   };
 
@@ -150,6 +185,17 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
         {/* Sidebar Filters */}
         <aside className="hidden lg:block w-64 flex-shrink-0">
           <div className="sticky top-8 space-y-6">
+            {/* Search Filter */}
+            <div className="border-b pb-6">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+            </div>
+
             {/* Availability Filter */}
             <div className="border-b pb-6">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center justify-between">
@@ -160,19 +206,21 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
                   <label className="flex items-center text-sm text-gray-700 cursor-pointer hover:text-[#6366f1]">
                     <input
                       type="checkbox"
-                      checked={selectedAvailability.includes('inStock')}
-                      onChange={() => handleAvailabilityChange('inStock')}
+                      checked={selectedAvailability.includes("inStock")}
+                      onChange={() => handleAvailabilityChange("inStock")}
                       className="mr-3 rounded border-gray-300 text-[#6366f1] focus:ring-[#6366f1]"
                     />
-                    <span className="font-medium">In stock ({inStockCount})</span>
+                    <span className="font-medium">
+                      In stock ({inStockCount})
+                    </span>
                   </label>
                 )}
                 {outOfStockCount > 0 && (
                   <label className="flex items-center text-sm text-gray-700 cursor-pointer hover:text-[#6366f1]">
                     <input
                       type="checkbox"
-                      checked={selectedAvailability.includes('outOfStock')}
-                      onChange={() => handleAvailabilityChange('outOfStock')}
+                      checked={selectedAvailability.includes("outOfStock")}
+                      onChange={() => handleAvailabilityChange("outOfStock")}
                       className="mr-3 rounded border-gray-300 text-[#6366f1] focus:ring-[#6366f1]"
                     />
                     <span className="font-medium">
@@ -191,8 +239,9 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
                 </h3>
                 <div className="space-y-3 max-h-60 overflow-y-auto">
                   {productTypes.map((type) => {
-                    const count = products.filter((p) => p.productType === type)
-                      .length;
+                    const count = products.filter(
+                      (p) => p.productType === type
+                    ).length;
                     return (
                       <label
                         key={type}
@@ -265,118 +314,141 @@ export default function ProductsFilter({ products }: ProductsFilterProps) {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {paginatedProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.handle}`}
-                  className="group"
-                >
-                  <div className="relative aspect-square overflow-hidden bg-gray-50 rounded-lg mb-3">
-                    {product.images.edges[0] && (
-                      <img
-                        src={product.images.edges[0].node.url}
-                        alt={
-                          product.images.edges[0].node.altText || product.title
-                        }
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    )}
-                    {!product.availableForSale && (
-                      <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        OUT OF STOCK
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-gray-900 mb-1 group-hover:text-[#6366f1] transition-colors line-clamp-2">
-                      {product.title}
-                    </h3>
-                    <p className="text-base font-bold text-gray-900">
-                      {product.priceRange.minVariantPrice.currencyCode === 'GBP' ? '£' : product.priceRange.minVariantPrice.currencyCode === 'EUR' ? '€' : '$'}
-                      {parseFloat(
-                        product.priceRange.minVariantPrice.amount
-                      ).toFixed(2)}
-                    </p>
-                    {product.priceRange.minVariantPrice.amount !==
-                      product.priceRange.maxVariantPrice.amount && (
-                      <p className="text-sm text-gray-500">
-                        From {product.priceRange.minVariantPrice.currencyCode === 'GBP' ? '£' : product.priceRange.minVariantPrice.currencyCode === 'EUR' ? '€' : '$'}
+                  <Link
+                    key={product.id}
+                    href={`/products/${product.handle}`}
+                    className="group"
+                  >
+                    <div className="relative aspect-square overflow-hidden bg-gray-50 rounded-lg mb-3">
+                      {product.images.edges[0] && (
+                        <img
+                          src={product.images.edges[0].node.url}
+                          alt={
+                            product.images.edges[0].node.altText ||
+                            product.title
+                          }
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      )}
+                      {!product.availableForSale && (
+                        <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          OUT OF STOCK
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-gray-900 mb-1 group-hover:text-[#6366f1] transition-colors line-clamp-2">
+                        {product.title}
+                      </h3>
+                      <p className="text-base font-bold text-gray-900">
+                        {product.priceRange.minVariantPrice.currencyCode ===
+                        "GBP"
+                          ? "£"
+                          : product.priceRange.minVariantPrice.currencyCode ===
+                            "EUR"
+                          ? "€"
+                          : "$"}
                         {parseFloat(
                           product.priceRange.minVariantPrice.amount
                         ).toFixed(2)}
                       </p>
+                      {product.priceRange.minVariantPrice.amount !==
+                        product.priceRange.maxVariantPrice.amount && (
+                        <p className="text-sm text-gray-500">
+                          From{" "}
+                          {product.priceRange.minVariantPrice.currencyCode ===
+                          "GBP"
+                            ? "£"
+                            : product.priceRange.minVariantPrice
+                                .currencyCode === "EUR"
+                            ? "€"
+                            : "$"}
+                          {parseFloat(
+                            product.priceRange.minVariantPrice.amount
+                          ).toFixed(2)}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-2">
+                  <button
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                      currentPage === 1
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-white border border-gray-300 text-gray-700 hover:border-[#6366f1] hover:text-[#6366f1]"
+                    }`}
+                  >
+                    Previous
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => {
+                        // Show first page, last page, current page, and pages around current
+                        const showPage =
+                          page === 1 ||
+                          page === totalPages ||
+                          (page >= currentPage - 1 && page <= currentPage + 1);
+
+                        // Show ellipsis
+                        const showEllipsisBefore =
+                          page === currentPage - 2 && currentPage > 3;
+                        const showEllipsisAfter =
+                          page === currentPage + 2 &&
+                          currentPage < totalPages - 2;
+
+                        if (showEllipsisBefore || showEllipsisAfter) {
+                          return (
+                            <span key={page} className="px-2 text-gray-500">
+                              ...
+                            </span>
+                          );
+                        }
+
+                        if (!showPage) return null;
+
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-10 h-10 rounded-lg font-semibold transition-colors ${
+                              currentPage === page
+                                ? "bg-[#6366f1] text-white"
+                                : "bg-white border border-gray-300 text-gray-700 hover:border-[#6366f1] hover:text-[#6366f1]"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      }
                     )}
                   </div>
-                </Link>
-              ))}
-            </div>
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-8 flex items-center justify-center gap-2">
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                    currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:border-[#6366f1] hover:text-[#6366f1]'
-                  }`}
-                >
-                  Previous
-                </button>
-
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                    // Show first page, last page, current page, and pages around current
-                    const showPage =
-                      page === 1 ||
-                      page === totalPages ||
-                      (page >= currentPage - 1 && page <= currentPage + 1);
-
-                    // Show ellipsis
-                    const showEllipsisBefore = page === currentPage - 2 && currentPage > 3;
-                    const showEllipsisAfter = page === currentPage + 2 && currentPage < totalPages - 2;
-
-                    if (showEllipsisBefore || showEllipsisAfter) {
-                      return (
-                        <span key={page} className="px-2 text-gray-500">
-                          ...
-                        </span>
-                      );
+                  <button
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                     }
-
-                    if (!showPage) return null;
-
-                    return (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-10 h-10 rounded-lg font-semibold transition-colors ${
-                          currentPage === page
-                            ? 'bg-[#6366f1] text-white'
-                            : 'bg-white border border-gray-300 text-gray-700 hover:border-[#6366f1] hover:text-[#6366f1]'
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                      currentPage === totalPages
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-white border border-gray-300 text-gray-700 hover:border-[#6366f1] hover:text-[#6366f1]"
+                    }`}
+                  >
+                    Next
+                  </button>
                 </div>
-
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                    currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:border-[#6366f1] hover:text-[#6366f1]'
-                  }`}
-                >
-                  Next
-                </button>
-              </div>
-            )}
-          </>
+              )}
+            </>
           )}
         </div>
       </div>
