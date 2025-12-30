@@ -9,6 +9,10 @@ interface ProductsResponse {
     edges: Array<{
       node: ShopifyProduct;
     }>;
+    pageInfo: {
+      hasNextPage: boolean;
+      endCursor: string | null;
+    };
   };
 }
 
