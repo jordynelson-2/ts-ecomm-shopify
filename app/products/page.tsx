@@ -1,8 +1,8 @@
-import { shopifyFetch } from '@/lib/shopify';
-import { GET_ALL_PRODUCTS } from '@/lib/queries';
-import { ShopifyProduct } from '@/lib/types';
-import Link from 'next/link';
-import ProductsFilter from '@/components/ProductsFilter';
+import { shopifyFetch } from "@/lib/shopify";
+import { GET_ALL_PRODUCTS } from "@/lib/queries";
+import { ShopifyProduct } from "@/lib/types";
+import Link from "next/link";
+import ProductsFilter from "@/components/ProductsFilter";
 
 interface ProductsResponse {
   products: {
@@ -16,14 +16,40 @@ export default async function ProductsPage() {
   let products: ShopifyProduct[] = [];
   let error: string | null = null;
 
+  // Fetch all products using cursor pagination (Shopify storefront max 250 per request)
+  async function fetchAllProducts(): Promise<ShopifyProduct[]> {
+    const all: ShopifyProduct[] = [];
+    let hasNextPage = true;
+    let after: string | undefined = undefined;
+
+    try {
+      while (hasNextPage) {
+        const data = await shopifyFetch<ProductsResponse>({
+          query: GET_ALL_PRODUCTS,
+          variables: { first: 250, after },
+        });
+
+        const edges = data.products.edges || [];
+        all.push(...edges.map((edge) => edge.node));
+
+        const pageInfo = data.products.pageInfo;
+        hasNextPage = Boolean(pageInfo?.hasNextPage);
+        after = pageInfo?.endCursor ?? undefined;
+
+        // Safety: break if no new edges were returned to avoid infinite loops
+        if (edges.length === 0) break;
+      }
+    } catch (err) {
+      throw err;
+    }
+
+    return all;
+  }
+
   try {
-    const data = await shopifyFetch<ProductsResponse>({
-      query: GET_ALL_PRODUCTS,
-      variables: { first: 250 },
-    });
-    products = data.products.edges.map((edge) => edge.node);
+    products = await fetchAllProducts();
   } catch (err) {
-    error = 'Failed to load products. Please check your Shopify configuration.';
+    error = "Failed to load products. Please check your Shopify configuration.";
     console.error(err);
   }
 
@@ -33,11 +59,17 @@ export default async function ProductsPage() {
       <div className="border-b bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center text-sm">
-            <Link href="/" className="text-gray-600 hover:text-[#6366f1] font-medium">
+            <Link
+              href="/"
+              className="text-gray-600 hover:text-[#6366f1] font-medium"
+            >
               Home
             </Link>
             <span className="mx-2 text-gray-400">/</span>
-            <Link href="/collections" className="text-gray-600 hover:text-[#6366f1] font-medium">
+            <Link
+              href="/collections"
+              className="text-gray-600 hover:text-[#6366f1] font-medium"
+            >
               Collections
             </Link>
             <span className="mx-2 text-gray-400">/</span>
